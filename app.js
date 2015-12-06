@@ -1,3 +1,13 @@
+'use strict';
+
+
+const env = process.env.NODE_ENV || 'development';
+
+var fs = require('fs');
+var mongoose = require('mongoose');
+var passport = require('passport');
+var config   = require('./config');
+
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -6,13 +16,9 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var app = express();
-var router = express.Router();
-
-var routes = require('./routes/index');
-var docs = require('./routes/api')(router);
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
+app.set('views', path.join(__dirname, 'app', 'views'));
 app.set('view engine', 'hbs');
 
 app.use(favicon(path.join(__dirname, 'public/images', 'favicon.ico')));
@@ -22,8 +28,15 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', routes);
-app.use('/api', router);
+
+const models = path.join(__dirname, 'app/models');
+// Bootstrap models
+fs.readdirSync(models)
+  .filter(file => ~file.indexOf('.js'))
+  .forEach(file => require(path.join(models, file)));
+
+// passport setup
+require('./config/passport')(passport);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -31,6 +44,8 @@ app.use(function(req, res, next) {
   err.status = 404;
   next(err);
 });
+
+require('./routes')(app, passport);
 
 // error handlers
 
