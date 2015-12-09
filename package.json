@@ -1,8 +1,8 @@
 {
-  "name": "node-react-stack-kit",
+  "name": "workmemo",
   "version": "1.0.0",
   "private": true,
-  "description": "Node React Stack is a starter kit project created to help bootstrap a quick application.",
+  "description": "track your work.",
   "scripts": {
     "start": "node ./bin/www",
     "build": "webpack --config webpack.prod.js --progress",
@@ -79,6 +79,7 @@
     "react-router": "^1.0.0-rc4",
     "redux": "^3.0.4",
     "redux-thunk": "^1.0.0",
+    "semantic-ui": "^2.1.6",
     "serve-favicon": "~2.3.0",
     "whatwg-fetch": "^0.10.1"
   }

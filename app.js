@@ -38,14 +38,14 @@ fs.readdirSync(models)
 // passport setup
 require('./config/passport')(passport);
 
+require('./routes')(app, passport);
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
   next(err);
 });
-
-require('./routes')(app, passport);
 
 // error handlers
 
