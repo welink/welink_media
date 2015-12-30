@@ -6,8 +6,7 @@ const env = process.env.NODE_ENV || 'development';
 var fs = require('fs');
 var mongoose = require('mongoose');
 var passport = require('passport');
-var config   = require('./config');
-
+var config = require('config');
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -16,6 +15,9 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var app = express();
+
+// Database
+require('./config/database')(mongoose);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'app', 'views'));

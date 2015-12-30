@@ -6,7 +6,6 @@
 
 const mongoose = require('mongoose');
 const User = mongoose.model('User');
-
 const local = require('./passport/local');
 const github = require('./passport/github');
 

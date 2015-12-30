@@ -3,7 +3,6 @@
 var express = require('express');
 var router = express.Router();
 var auth = require('./authorization');
-var config = require('../config');
 var usersController = require(config.root + '/app/controllers/users');
 var memosController = require(config.root + '/app/controllers/memos');
 

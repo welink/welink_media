@@ -13,22 +13,17 @@ var oAuthTypes = ['twitter', 'facebook', 'google'];
  */
 
 var UserSchema = new Schema({
-  username: {
+  name: {
     type: String,
     require: true
   },
-  email: {
+  phone: {
     type: String,
     unique: true,
     require: true,
     lowercase: true
   },
-  firstname: String,
-  lastname: String,
-  photo_profile: String,
-  facebook: {},
-  twitter: {},
-  tokens: [],
+  avatar: String,
   provider: {
     type: String,
     default: 'local'
@@ -69,45 +64,32 @@ var validatePresenceOf = function (value) {
 
 // the below 5 validations only apply if you are signing up traditionally
 
-UserSchema.path('username').validate(function (username) {
+UserSchema.path('name').validate(function (name) {
   if (this.doesNotRequireValidation()) return true
-  return username.length
-}, 'Username cannot be blank')
+  return name.length
+}, '姓名不能为空')
 
-UserSchema.path('username').validate(function (username, fn) {
+UserSchema.path('phone').validate(function (phone) {
+  if (this.doesNotRequireValidation()) return true
+  return phone.length
+}, '手机号码不能为空')
+
+UserSchema.path('phone').validate(function (phone, fn) {
   var User = mongoose.model('User')
   if (this.doesNotRequireValidation()) fn(true)
 
-  // Check only when it is a new user or when email field is modified
-  if (this.isNew || this.isModified('username')) {
-    User.find({ username: username }).exec(function (err, users) {
+  // Check only when it is a new user or when phone field is modified
+  if (this.isNew || this.isModified('phone')) {
+    User.find({ phone: phone }).exec(function (err, users) {
       fn(!err && users.length === 0)
     })
   } else fn(true)
-}, 'Username already exists')
-
-
-UserSchema.path('email').validate(function (email) {
-  if (this.doesNotRequireValidation()) return true
-  return email.length
-}, 'Email cannot be blank')
-
-UserSchema.path('email').validate(function (email, fn) {
-  var User = mongoose.model('User')
-  if (this.doesNotRequireValidation()) fn(true)
-
-  // Check only when it is a new user or when email field is modified
-  if (this.isNew || this.isModified('email')) {
-    User.find({ email: email }).exec(function (err, users) {
-      fn(!err && users.length === 0)
-    })
-  } else fn(true)
-}, 'Email already exists')
+}, '手机号码已存在')
 
 UserSchema.path('hashed_password').validate(function (hashed_password) {
   if (this.doesNotRequireValidation()) return true
   return hashed_password.length
-}, 'Password cannot be blank')
+}, '密码不能为空')
 
 
 /**
@@ -188,18 +170,6 @@ UserSchema.methods = {
 
     return admin_level
   },
-
-  gravatar: function(size) {
-    if (!size) size = 200;
-
-    if (!this.email) {
-      return 'https://gravatar.com/avatar/?s=' + size + '&d=retro';
-    }
-
-    var md5 = require('crypto').createHash('md5').update(this.email).digest('hex');
-    return 'https://gravatar.com/avatar/' + md5 + '?s=' + size + '&d=retro';
-  },
-
 
   /**
    * Validation is not required if using OAuth

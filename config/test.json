@@ -8,5 +8,8 @@
   "LINKEDIN_CLIENTID": "ID",
   "LINKEDIN_SECRET": "SECRET",
   "GOOGLE_CLIENTID": "ID",
-  "GOOGLE_SECRET": "SECRET"
+  "GOOGLE_SECRET": "SECRET",
+  "database": {
+    "url": "mongodb://localhost/mubiao_test"
+  }
 }
