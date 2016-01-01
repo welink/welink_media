@@ -39,6 +39,8 @@ fs.readdirSync(models)
 
 // passport setup
 require('./config/passport')(passport);
+app.use(passport.initialize());
+app.use(passport.session());
 
 require('./routes')(app, passport);
 
