@@ -13,13 +13,13 @@ const User = mongoose.model('User');
  */
 
 module.exports = new LocalStrategy({
-    usernameField: 'email',
+    usernameField: 'phone',
     passwordField: 'password'
   },
-  function (email, password, done) {
+  function (phone, password, done) {
     const options = {
-      criteria: { email: email },
-      select: 'name username email hashed_password salt'
+      criteria: { phone: phone },
+      select: 'name username phone hashed_password salt'
     };
     User.load(options, function (err, user) {
       if (err) return done(err);

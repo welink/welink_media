@@ -13,7 +13,8 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
+var session = require('express-session')
+var RedisStore = require('connect-redis')(session);
 var app = express();
 
 // Database
@@ -29,7 +30,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
+app.use(session({
+  store: new RedisStore({host: '127.0.0.1'}),
+  secret: 'mubiao.io',
+  resave: true,
+  saveUninitialized: true,
+  cookie: { secure: false }
+}));
 
 const models = path.join(__dirname, 'app/models');
 // Bootstrap models

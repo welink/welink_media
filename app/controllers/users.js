@@ -57,12 +57,12 @@ exports.create = function (req, res, next) {
     } else {
       console.log(user)
       // manually login the user once successfully signed up
-      req.logIn(user, function(err) {
+      req.login(user, function(err) {
         if (err) {
           console.log(err)
           return next(err)
         }
-        return res.redirect('/home')
+        return res.redirect('/')
       })
     }
   })
