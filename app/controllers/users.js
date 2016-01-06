@@ -20,6 +20,19 @@ exports.signin = function (req, res) {
   });
 };
 
+
+exports.session = function (req, res) {
+  if(req.isAuthenticated()){
+    res.redirect('/')
+  }else{
+    res.render('users/signin', {
+      title: 'Login',
+      message: req.flash('error')
+    })
+  }
+}
+
+
 /**
  * Show sign up form
  */

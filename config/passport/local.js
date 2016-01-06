@@ -16,20 +16,23 @@ module.exports = new LocalStrategy({
     usernameField: 'phone',
     passwordField: 'password'
   },
-  function (phone, password, done) {
-    const options = {
-      criteria: { phone: phone },
-      select: 'name username phone hashed_password salt'
-    };
-    User.load(options, function (err, user) {
-      if (err) return done(err);
-      if (!user) {
-        return done(null, false, { message: 'Unknown user' });
-      }
-      if (!user.authenticate(password)) {
-        return done(null, false, { message: 'Invalid password' });
-      }
-      return done(null, user);
-    });
-  }
+  function(phone, password, done) {
+
+      User.findOne( { phone: phone } , function (err, user) {
+
+        if (err) {
+          return done(err)
+        }
+
+        if (!user) {
+          return done(null, false, { message: 'Your phone not register' })
+        }
+
+        if (!user.authenticate(password)) {
+          return done(null, false, { message: 'invalid login or password' })
+        }
+
+        return done(null, user)
+      })
+    }
 );
